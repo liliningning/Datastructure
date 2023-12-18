@@ -34,7 +34,7 @@ typedef int ELEMENTTYPE; //方便修改
     int dynamicArrayDeleteAppointPosData(dynamicArray *pArray,int pos);
 
 //动态数组删除指定的元素
-    int dynamicArrayDeleteAppointPosData(dynamicArray ELEMENTTYPE val);
+    int dynamicArrayDeleteAppointData(dynamicArray *pArray ELEMENTTYPE val);
 
 //动态数组销毁
     int dynamicArrayDestroy(dynamicArray *pArray);

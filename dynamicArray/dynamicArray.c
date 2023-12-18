@@ -10,8 +10,44 @@ enum STATUS_CODE
 {
     ON_SUCCESS,
     NULL_PTR,
+    MALLOC_ERROR,
+    INVALID_ACCESS,
 
 };
+
+
+//动态数组扩容 静态函数前置声明 只能在这个文件里面使用
+
+static expandDynamicCapacity(dynamicArray * pArray)
+{
+    int ret = 0;
+
+    int needExpandCapacity = pArray->capacity + (pArray->capacity >> 1);
+
+    //备份指针 防止原始数据丢失
+    ELEMENTTYPE * temPtr = pArray->data;
+   pArray->data=(ELEMENTTYPE *)  malloc(sizeof(ELEMENTTYPE) * needExpandCapacity);
+   // 判断malloc 分配是否成功
+    if(pArray->data == NULL)
+    {
+        return MALLOC_ERROR;
+    }
+    // 拷贝之前的数据
+    for(int idx = 0; idx < pArray->len; idx++)
+    {
+        pArray->data[idx] = temPtr[idx];
+    }
+    //  释放以前的内存 避免内存泄漏
+    if(temPtr != NULL)
+    {
+        free(temPtr);
+        temPtr =NULL;
+    }
+    //更新动态数组的容量
+    pArray->capacity = needExpandCapacity;
+
+    return ret;
+}
 
 
 //动态数组的初始化
@@ -34,24 +70,67 @@ enum STATUS_CODE
         {
           return MALLOC_ERROR;
         }
-        //初始化
+        //初始化  定义的空间 大小 数量
         memset(pArray->data,0,sizeof(ELEMENTTYPE) * capacity);
         pArray->len = 0;
         pArray->capacity = capacity;
         return ON_SUCCESS;
 
-
-
-
-
-
     }
 
 //动态数组插入数据 （默认在末尾插入数据）
-    int dynamicArrayInsertData(dynamicArray *pArray,ELEMENTTYPE val );
+    int dynamicArrayInsertData(dynamicArray *pArray,ELEMENTTYPE val )
+    {
+        dynamicArrayAppointPosInsertData(pArray,pArray->len,val);
+
+    }
 
 //动态数组插入数据 （在指定位置插入数据    在插入后面的数据后移）
-    int dynamicArrayAppointPosInsertData(dynamicArray *pArray,int pos,ELEMENTTYPE val);
+    int dynamicArrayAppointPosInsertData(dynamicArray *pArray,int pos,ELEMENTTYPE val)
+    {
+        //指针判空
+        if(pArray == NULL)
+        {
+            return NULL_PTR;
+        }
+
+        //判断位置的合法性  越界
+        if(pos < 0 || pos > pArray->len)
+        {
+            return INVALID_ACCESS;
+        }
+
+        if((pArray->len + (pArray->len >> 1)) >= pArray.capacity)
+        {
+             //开始扩容  动态数组扩容： 要到达临界值时开始扩容 
+            expandDynamicCapacity(pArray);
+        }
+
+       
+        
+
+
+
+        //数据后移  留出pos的位置 插入
+        for(int idx = pArray->len; idx > pos; idx--)
+        {
+            pArray->data[idx] = pArray->data[idx - 1];
+        }
+
+#if 0        
+        for(int idx = 1; idx < pArray->len; idx++)
+        {
+            pArray->data[idx + 1]
+        }
+#endif
+        //找对应的值 写入数组中
+        pArray->data = val;
+        //数组大小加1
+        (pArray->len)++;
+        return ON_SUCCESS;
+
+
+    }
 
 // 动态数组修改指定位置的数据 
     int dynamicArrayModifyAppointPosData(dynamicArray *pArray,int pos,ELEMENTTYPE val);
@@ -63,7 +142,7 @@ enum STATUS_CODE
     int dynamicArrayDeleteAppointPosData(dynamicArray *pArray,int pos);
 
 //动态数组删除指定的元素
-    int dynamicArrayDeleteAppointPosData(dynamicArray ELEMENTTYPE val);
+    int dynamicArrayDeleteAppointData(dynamicArray *pArray ELEMENTTYPE val);
 
 //动态数组销毁
     int dynamicArrayDestroy(dynamicArray *pArray);
