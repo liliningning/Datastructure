@@ -157,12 +157,7 @@ int LinkListAppintPosDel(LinkList *pList, int pos)
     }
     pList->len--;
     return ON_SUCCESS;
-
-    
-    
-
 }
-
 
 // 链表删除指定数据
 int LinkListDelAppointData(LinkList *pList, ELEMENTTPYE val)
@@ -172,7 +167,6 @@ int LinkListDelAppointData(LinkList *pList, ELEMENTTPYE val)
 // 获取链表的长度
 int LinkListGetLength(LinkList *pList, int *pSize)
 {
-    int ret = 0;
     if (pList == NULL)
     {
         return NULL_PTR;
@@ -181,12 +175,27 @@ int LinkListGetLength(LinkList *pList, int *pSize)
     {
         *pSize = pList->len;
     }
-    return ret;
+    return pList->len;
 }
 
 // 链表的销毁
 int LinkListDestroy(LinkList *pList)
-{
+{   //使用头删 释放链表
+    int size = 0;
+    while (LinkListGetLength(pList,size))
+    {
+        LinkListHeadDel(pList);
+    }
+
+    if(pList->head != NULL)
+    {
+        free(pList->head);
+        pList.head = NULL;
+        pList->tail = NULL;
+    }
+    
+    
+
 }
 
 // 链表的遍历
