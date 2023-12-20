@@ -147,20 +147,21 @@ int LinkListAppintPosDel(LinkList *pList, int pos)
     {
         flag = 1;
     }
-     // LinkNode * trvaelNode = pList->head->next;
+    // LinkNode * trvaelNode = pList->head->next;
     while (--pos)
     {
         // 后移
         trvaelNode = trvaelNode->next;
         // pos--;
     }
+
     // needNode 需要删除的结点
     LinkNode *needNode = trvaelNode->next;
     trvaelNode->next = needNode->next;
     // trvaelNode->next = trvaelNode->next->next
 
     // 调整尾指针
-    if (flag)
+    if (flag == 1)
     {
         pList->tail = trvaelNode;
     }
@@ -248,8 +249,8 @@ int LinkListDestroy(LinkList *pList)
 }
 
 // 链表的遍历
-// int linkedListForeach(LinkList *pList, int(*printFunc)(ELEMENTTPYE))
-int linkedListForeach(LinkList *pList)
+int linkedListForeach(LinkList *pList, int(*printFunc)(ELEMENTTPYE))
+// int linkedListForeach(LinkList *pList)
 {
     int ret = 0;
     if (pList == NULL)
@@ -274,17 +275,15 @@ int linkedListForeach(LinkList *pList)
     // 从链表第一个结点开始（travelNode 指向第一个结点）
     // LinkNode *travelNode = pList->head->next;
     while (travelNode->next != NULL)
-    {
+    {   
         travelNode = travelNode->next;
-    #if 1
+    #if 0
         printf("travelNode->data %d\n", travelNode->data);
         // travelNode = travelNode->next;
     #else
     //包装器 回调函数
-    printFunc(travelNode->data);
-
-
-        travelNode = travelNode->next;
+    // 调用这个函数
+     printFunc(travelNode->data);
     #endif
     }
 #endif
