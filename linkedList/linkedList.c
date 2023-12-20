@@ -115,17 +115,54 @@ int LinkListAppointPosInsert(LinkList *pList, int pos, ELEMENTTPYE val)
 // 链表的头删
 int LinkListHeadDel(LinkList *pList)
 {
+  return   LinkListAppintPosDel(pList, 1);
 }
 
 // 链表的尾删
 int LinkListTailDel(LinkList *pList)
 {
+    LinkListAppintPosDel(pList, pList->len);
 }
 
 // 链表的指定位置删除
 int LinkListAppintPosDel(LinkList *pList, int pos)
 {
+    if(pList == NULL)
+    {
+        return NULL_PTR;
+    }
+
+    if(pos <= 0 || pos > pList->len)
+    {
+        return INVALID_ACCESS;
+    }
+    LinkNode * trvaelNode = pList->head;
+
+    // LinkNode * trvaelNode = pList->head->next;
+    while (--pos)
+    {
+        //后移
+        trvaelNode = trvaelNode->next;
+        // pos--;
+    }
+    //needNode 需要删除的结点
+    LinkNode * needNode = trvaelNode->next;
+    trvaelNode->next = needNode->next;
+    // trvaelNode->next = trvaelNode->next->next
+    //释放内存 
+    if(needNode != NULL)
+    {
+        free(needNode);
+        needNode = NULL;
+    }
+    pList->len--;
+    return ON_SUCCESS;
+
+    
+    
+
 }
+
 
 // 链表删除指定数据
 int LinkListDelAppointData(LinkList *pList, ELEMENTTPYE val)
