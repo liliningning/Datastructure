@@ -61,5 +61,11 @@
 // 链表的销毁
     int LinkListDestroy(LinkList * pList)
     {
-        
+
+    }
+
+//链表的遍历
+    int linkedListForeach(LinkList * pList)
+    {
+
     }
