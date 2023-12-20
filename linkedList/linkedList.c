@@ -5,12 +5,17 @@
 // 状态码
 enum STATUS_CODE
 {
+    NOT_FIND = -1,
     ON_SUCCESS,
     NULL_PTR,
     MALLOC_ERROR,
     INVALID_ACCESS,
 
 };
+
+
+//静态函数的声明 找到要删除元素的位置 
+static int linkedListAccordAppointVal();
 
 // 链表初始化
 int LinkListInit(LinkList **pList)
@@ -91,7 +96,7 @@ int LinkListAppointPosInsert(LinkList *pList, int pos, ELEMENTTPYE val)
     if (pos == pList->len)
     {
         travelNode = pList->tail;
-         flag = 1;
+        flag = 1;
     }
     else
     {
@@ -115,7 +120,7 @@ int LinkListAppointPosInsert(LinkList *pList, int pos, ELEMENTTPYE val)
 // 链表的头删
 int LinkListHeadDel(LinkList *pList)
 {
-  return   LinkListAppintPosDel(pList, 1);
+    return LinkListAppintPosDel(pList, 1);
 }
 
 // 链表的尾删
@@ -127,30 +132,30 @@ int LinkListTailDel(LinkList *pList)
 // 链表的指定位置删除
 int LinkListAppintPosDel(LinkList *pList, int pos)
 {
-    if(pList == NULL)
+    if (pList == NULL)
     {
         return NULL_PTR;
     }
 
-    if(pos <= 0 || pos > pList->len)
+    if (pos <= 0 || pos > pList->len)
     {
         return INVALID_ACCESS;
     }
-    LinkNode * trvaelNode = pList->head;
+    LinkNode *trvaelNode = pList->head;
 
     // LinkNode * trvaelNode = pList->head->next;
     while (--pos)
     {
-        //后移
+        // 后移
         trvaelNode = trvaelNode->next;
         // pos--;
     }
-    //needNode 需要删除的结点
-    LinkNode * needNode = trvaelNode->next;
+    // needNode 需要删除的结点
+    LinkNode *needNode = trvaelNode->next;
     trvaelNode->next = needNode->next;
     // trvaelNode->next = trvaelNode->next->next
-    //释放内存 
-    if(needNode != NULL)
+    // 释放内存
+    if (needNode != NULL)
     {
         free(needNode);
         needNode = NULL;
@@ -159,9 +164,44 @@ int LinkListAppintPosDel(LinkList *pList, int pos)
     return ON_SUCCESS;
 }
 
+//静态函数只给本源文件自己使用 不需要判断合法性
+static int linkedListAccordAppointVal(LinkList *pList, ELEMENTTPYE val, int * pPos)
+{
+    int ret;
+#if 1
+    LinkList * trvaelNode = pList->head;
+#else
+    int pos = 1;
+    LinkList * trvaelNode = pList->head->next;
+#endif
+    while (trvaelNode != NULL)
+    {
+        if(trvaelNode->data == val)
+        {   
+            *pPos = pos;
+            return pos;
+
+        }
+       trvaelNode = trvaelNode->next;
+       pos++;
+    }
+    return NOT_FIND;
+}
+
 // 链表删除指定数据
 int LinkListDelAppointData(LinkList *pList, ELEMENTTPYE val)
-{
+{    int pos = 0;
+     int ret = 0;
+     int size = 0;
+     while(LinkListGetLength(pList, &size) && pos != NOT_FIND)
+     {
+        //找到数据所在的位置
+        linkedListAccordAppointVal(pList, val, &pos);
+        //指定位置删除
+        LinkListAppintPosDel(pList,pos);
+        LinkListAppintPosDel()
+    }
+    return ret;
 }
 
 // 获取链表的长度
@@ -180,22 +220,19 @@ int LinkListGetLength(LinkList *pList, int *pSize)
 
 // 链表的销毁
 int LinkListDestroy(LinkList *pList)
-{   //使用头删 释放链表
+{ // 使用头删 释放链表
     int size = 0;
-    while (LinkListGetLength(pList,size))
+    while (LinkListGetLength(pList, size))
     {
         LinkListHeadDel(pList);
     }
 
-    if(pList->head != NULL)
+    if (pList->head != NULL)
     {
         free(pList->head);
         pList.head = NULL;
         pList->tail = NULL;
     }
-    
-    
-
 }
 
 // 链表的遍历
