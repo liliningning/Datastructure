@@ -138,5 +138,30 @@ int LinkListDestroy(LinkList *pList)
 // 链表的遍历
 int linkedListForeach(LinkList *pList)
 {
-    
+    int ret = 0;
+     if (pList == NULL)
+    {
+        return NULL_PTR;
+    }
+ 
+#if 0
+    //从头结点开始
+    LinkNode *travelNode = pList->head;
+    while (travelNode->next  != NULL)
+    {
+        travelNode = travelNode->next;
+        prinf("travelNode->data %d\t",travelNode->data); 
+    }
+
+#else
+    // 从第一个结点开始
+    LinkNode *travelNode = pList->head->next;
+    while (travelNode->next  != NULL)
+    {
+        travelNode = travelNode->next;
+        prinf("travelNode->data %d\t",travelNode->data);
+        travelNode =  travelNode->next 
+    }
+#endif   
+    return ret;
 }
