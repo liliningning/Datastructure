@@ -13,9 +13,8 @@ enum STATUS_CODE
 
 };
 
-
-//静态函数的声明 找到要删除元素的位置 
-static int linkedListAccordAppointVal();
+// 静态函数的声明 找到要删除元素的位置
+static int linkedListAccordAppointVal(LinkList *pList, ELEMENTTPYE val, int *pPos);
 
 // 链表初始化
 int LinkListInit(LinkList **pList)
@@ -141,8 +140,14 @@ int LinkListAppintPosDel(LinkList *pList, int pos)
     {
         return INVALID_ACCESS;
     }
-    LinkNode *trvaelNode = pList->head;
 
+    int flag = 0;
+    if (pos = pList->len)
+    {
+        flag = 1;
+    }
+
+    LinkNode *trvaelNode = pList->head;
     // LinkNode * trvaelNode = pList->head->next;
     while (--pos)
     {
@@ -154,6 +159,12 @@ int LinkListAppintPosDel(LinkList *pList, int pos)
     LinkNode *needNode = trvaelNode->next;
     trvaelNode->next = needNode->next;
     // trvaelNode->next = trvaelNode->next->next
+
+    // 调整尾指针
+    if (flag = 1)
+    {
+        pList->tail = trvaelNode;
+    }
     // 释放内存
     if (needNode != NULL)
     {
@@ -164,41 +175,41 @@ int LinkListAppintPosDel(LinkList *pList, int pos)
     return ON_SUCCESS;
 }
 
-//静态函数只给本源文件自己使用 不需要判断合法性
-static int linkedListAccordAppointVal(LinkList *pList, ELEMENTTPYE val, int * pPos)
+// 静态函数只给本源文件自己使用 不需要判断合法性
+static int linkedListAccordAppointVal(LinkList *pList, ELEMENTTPYE val, int *pPos)
 {
     int ret;
 #if 1
-    LinkList * trvaelNode = pList->head;
+    LinkList *trvaelNode = pList->head;
 #else
     int pos = 1;
-    LinkList * trvaelNode = pList->head->next;
+    LinkList *trvaelNode = pList->head->next;
 #endif
     while (trvaelNode != NULL)
     {
-        if(trvaelNode->data == val)
-        {   
+        if (trvaelNode->data == val)
+        {
             *pPos = pos;
             return pos;
-
         }
-       trvaelNode = trvaelNode->next;
-       pos++;
+        trvaelNode = trvaelNode->next;
+        pos++;
     }
     return NOT_FIND;
 }
 
 // 链表删除指定数据
 int LinkListDelAppointData(LinkList *pList, ELEMENTTPYE val)
-{    int pos = 0;
-     int ret = 0;
-     int size = 0;
-     while(LinkListGetLength(pList, &size) && pos != NOT_FIND)
-     {
-        //找到数据所在的位置
+{
+    int pos = 0;
+    int ret = 0;
+    int size = 0;
+    while (LinkListGetLength(pList, &size) && pos != NOT_FIND)
+    {
+        // 找到数据所在的位置
         linkedListAccordAppointVal(pList, val, &pos);
-        //指定位置删除
-        LinkListAppintPosDel(pList,pos);
+        // 指定位置删除
+        LinkListAppintPosDel(pList, pos);
         LinkListAppintPosDel()
     }
     return ret;
