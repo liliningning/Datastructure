@@ -8,14 +8,18 @@ typedef struct LinkNode
     ELEMENTTPYE data;
     // 指向下一个结点的指针
     struct LinkNode *next;
+
 } LinkNode;
 
 // 链表
 typedef struct LinkList
 {   // 链表的虚拟头结点
     LinkNode * head;
+    //尾指针
+    LinkNode * tail;  //为什么尾指针不需要分配空间？
     //链表长度
     int len;
+
 }LinkList;
 
 //链表初始化
