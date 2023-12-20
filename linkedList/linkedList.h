@@ -1,7 +1,9 @@
 #ifndef __LINKEDLIST_H_
 #define __LINKEDLIST_H_
 
-#define ELEMENTTPYE int
+ #define ELEMENTTPYE int
+// #define ELEMENTTPYE void*
+
 // 链表结点
 typedef struct LinkNode
 {
@@ -53,8 +55,9 @@ typedef struct LinkList
     int LinkListDestroy(LinkList * pList);
 
 //链表的遍历
-    int linkedListForeach(LinkList * pList);
+    // int linkedListForeach(LinkList * pList, int(*printFunc)(ELEMENTTPYE));
 
+    int linkedListForeach(LinkList * pList);
 
 
 #endif

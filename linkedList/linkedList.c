@@ -1,6 +1,7 @@
 #include "linkedList.h"
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 // 状态码
 enum STATUS_CODE
@@ -21,7 +22,7 @@ int LinkListInit(LinkList **pList)
 {
     int ret = 0;
     // 链表开辟空间
-    LinkList *list = (ELEMENTTPYE *)malloc(sizeof(LinkList) * 1);
+    LinkList *list =(LinkList *)malloc(sizeof(LinkList) * 1);
     if (list == NULL)
     {
         return MALLOC_ERROR;
@@ -29,7 +30,7 @@ int LinkListInit(LinkList **pList)
     // 清楚脏数据
     memset(list, 0, sizeof(LinkList) * 1);
     // 头结点开辟空间
-    list->head = (ELEMENTTPYE *)malloc(sizeof(LinkNode) * 1);
+    list->head = malloc(sizeof(LinkNode) * 1);
     if (list->head == NULL)
     {
         return MALLOC_ERROR;
@@ -53,13 +54,13 @@ int LinkListInit(LinkList **pList)
 // 链表头插
 int LinkListHeadInsert(LinkList *pList, ELEMENTTPYE val)
 {
-    return reLinkListAppointPosInsert(pList, 0, val);
+    return LinkListAppointPosInsert(pList, 0, val);
 }
 
 // 链表尾插
 int LinkListTailInsert(LinkList *pList, ELEMENTTPYE val)
 {
-    return reLinkListAppointPosInsert(pList, len, val);
+    return LinkListAppointPosInsert(pList, pList->len, val);
 }
 
 // 链表指定位置插入
@@ -140,15 +141,13 @@ int LinkListAppintPosDel(LinkList *pList, int pos)
     {
         return INVALID_ACCESS;
     }
-
+    LinkNode *trvaelNode = pList->head;
     int flag = 0;
     if (pos = pList->len)
     {
         flag = 1;
     }
-
-    LinkNode *trvaelNode = pList->head;
-    // LinkNode * trvaelNode = pList->head->next;
+     // LinkNode * trvaelNode = pList->head->next;
     while (--pos)
     {
         // 后移
@@ -161,7 +160,7 @@ int LinkListAppintPosDel(LinkList *pList, int pos)
     // trvaelNode->next = trvaelNode->next->next
 
     // 调整尾指针
-    if (flag = 1)
+    if (flag)
     {
         pList->tail = trvaelNode;
     }
@@ -171,31 +170,33 @@ int LinkListAppintPosDel(LinkList *pList, int pos)
         free(needNode);
         needNode = NULL;
     }
-    pList->len--;
+    (pList->len)--;
     return ON_SUCCESS;
 }
 
 // 静态函数只给本源文件自己使用 不需要判断合法性
 static int linkedListAccordAppointVal(LinkList *pList, ELEMENTTPYE val, int *pPos)
 {
-    int ret;
-#if 1
-    LinkList *trvaelNode = pList->head;
+     int pos = 1;
+#if 0
+    LinkNode *trvaelNode = pList->head;
 #else
-    int pos = 1;
-    LinkList *trvaelNode = pList->head->next;
+   
+  LinkNode *trvaelNode = pList->head->next;
 #endif
     while (trvaelNode != NULL)
     {
         if (trvaelNode->data == val)
         {
-            *pPos = pos;
+            *pPos =pos;
             return pos;
         }
         trvaelNode = trvaelNode->next;
         pos++;
     }
+    *pPos = NOT_FIND;
     return NOT_FIND;
+    
 }
 
 // 链表删除指定数据
@@ -210,7 +211,7 @@ int LinkListDelAppointData(LinkList *pList, ELEMENTTPYE val)
         linkedListAccordAppointVal(pList, val, &pos);
         // 指定位置删除
         LinkListAppintPosDel(pList, pos);
-        LinkListAppintPosDel()
+      
     }
     return ret;
 }
@@ -233,7 +234,7 @@ int LinkListGetLength(LinkList *pList, int *pSize)
 int LinkListDestroy(LinkList *pList)
 { // 使用头删 释放链表
     int size = 0;
-    while (LinkListGetLength(pList, size))
+    while (LinkListGetLength(pList, &size))
     {
         LinkListHeadDel(pList);
     }
@@ -241,12 +242,13 @@ int LinkListDestroy(LinkList *pList)
     if (pList->head != NULL)
     {
         free(pList->head);
-        pList.head = NULL;
+        pList->head = NULL;
         pList->tail = NULL;
     }
 }
 
 // 链表的遍历
+// int linkedListForeach(LinkList *pList, int(*printFunc)(ELEMENTTPYE))
 int linkedListForeach(LinkList *pList)
 {
     int ret = 0;
@@ -265,13 +267,25 @@ int linkedListForeach(LinkList *pList)
     }
 
 #else
+    
+    //从头结点开始
+    LinkNode *travelNode = pList->head;
+
     // 从链表第一个结点开始（travelNode 指向第一个结点）
-    LinkNode *travelNode = pList->head->next;
+    // LinkNode *travelNode = pList->head->next;
     while (travelNode->next != NULL)
     {
         travelNode = travelNode->next;
-        prinf("travelNode->data %d\t", travelNode->data);
-        travelNode = travelNode->next
+    #if 1
+        printf("travelNode->data %d\n", travelNode->data);
+        // travelNode = travelNode->next;
+    #else
+    //包装器 回调函数
+    printFunc(travelNode->data);
+
+
+        travelNode = travelNode->next;
+    #endif
     }
 #endif
     return ret;
