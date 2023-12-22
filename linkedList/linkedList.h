@@ -46,7 +46,7 @@ typedef struct LinkList
     int LinkListAppintPosDel(LinkList * pList, int pos);
 
 //链表删除指定数据
-    int LinkListDelAppointData(LinkList * pList, ELEMENTTPYE val);
+    int LinkListDelAppointData(LinkList * pList, ELEMENTTPYE val, int ( *comparFunc)(ELEMENTTPYE, ELEMENTTPYE));
 
 //获取链表的长度
     int LinkListGetLength(LinkList * pList, int *pSize);

@@ -15,7 +15,7 @@ enum STATUS_CODE
 };
 
 // 静态函数的声明 找到要删除元素的位置
-static int linkedListAccordAppointVal(LinkList *pList, ELEMENTTPYE val, int *pPos);
+static int linkedListAccordAppointVal(LinkList *pList, ELEMENTTPYE val, int *pPos, int ( *comparFunc)(ELEMENTTPYE, ELEMENTTPYE));
 
 // 链表初始化
 int LinkListInit(LinkList **pList)
@@ -108,7 +108,8 @@ int LinkListAppointPosInsert(LinkList *pList, int pos, ELEMENTTPYE val)
     }
     newNode->next = travelNode->next;
     travelNode->next = newNode;
-    if (flag = 0)
+
+    if (flag == 1)
     {
         pList->tail = newNode;
     }
@@ -176,7 +177,7 @@ int LinkListAppintPosDel(LinkList *pList, int pos)
 }
 
 // 静态函数只给本源文件自己使用 不需要判断合法性
-static int linkedListAccordAppointVal(LinkList *pList, ELEMENTTPYE val, int *pPos)
+static int linkedListAccordAppointVal(LinkList *pList, ELEMENTTPYE val, int *pPos, int ( *comparFunc)(ELEMENTTPYE, ELEMENTTPYE))
 {
      int pos = 1;
 #if 0
@@ -185,13 +186,23 @@ static int linkedListAccordAppointVal(LinkList *pList, ELEMENTTPYE val, int *pPo
    
   LinkNode *trvaelNode = pList->head->next;
 #endif
+    int cmp = 0;
     while (trvaelNode != NULL)
     {
+        #if 0
         if (trvaelNode->data == val)
         {
             *pPos =pos;
             return pos;
         }
+        #else
+        cmp = comparFunc(val,trvaelNode->data);
+        if(cmp == 0)
+        {
+            *pPos =pos;
+            return pos;
+        }
+        #endif
         trvaelNode = trvaelNode->next;
         pos++;
     }
@@ -201,7 +212,7 @@ static int linkedListAccordAppointVal(LinkList *pList, ELEMENTTPYE val, int *pPo
 }
 
 // 链表删除指定数据
-int LinkListDelAppointData(LinkList *pList, ELEMENTTPYE val)
+int LinkListDelAppointData(LinkList *pList, ELEMENTTPYE val, int ( *comparFunc)(ELEMENTTPYE, ELEMENTTPYE))
 {
     int pos = 0;
     int ret = 0;
@@ -209,7 +220,7 @@ int LinkListDelAppointData(LinkList *pList, ELEMENTTPYE val)
     while (LinkListGetLength(pList, &size) && pos != NOT_FIND)
     {
         // 找到数据所在的位置
-        linkedListAccordAppointVal(pList, val, &pos);
+        linkedListAccordAppointVal(pList, val, &pos, comparFunc);
         // 指定位置删除
         LinkListAppintPosDel(pList, pos);
       

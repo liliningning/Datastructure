@@ -13,21 +13,31 @@ typedef struct stuInfo
     int sex;
 } stuInfo;
 
-#if 0
-//自定义打印 用户定义是什么类型 就用什么类型
+#if 1
+// 自定义打印 用户定义是什么类型 就用什么类型
  int printfStruct(void * arg)
  {
          stuInfo *info  = (stuInfo*)arg;
          printf("age :%d\t, sex :%c\n",info->age,info->sex);
  }
 
-#else
+
+//用户自定义
 int printfBasicData(void * arg)
 {
     int data = *(int *)arg;
     printf("data %d\n",data); 
     return 0;
 }
+
+
+int comparFunc (ELEMENTTPYE arg1, ELEMENTTPYE arg2)
+{
+    int num1 = *(int *)arg1;
+    int num2 = *(int *)arg2;
+    return num1 == num2 ? 1: 0;
+}
+
 #endif
 int main()
 {
@@ -35,8 +45,8 @@ int main()
     LinkList *list = NULL;
     // 初始化链表
     LinkListInit(&list);
-    int buffer[BUFFER_SIZE] = {1, 2, 3};
-#if 1
+    // int buffer[BUFFER_SIZE] = {1, 2, 3};
+#if 0
 
     for (int idx = 0; idx < BUFFER_SIZE; idx++)
     {
@@ -76,7 +86,7 @@ int main()
 
 
 #endif
-#if 0
+#if 1
 
     stuInfo stu1, stu2, stu3;
     memset(&stu1, 0, sizeof(stu1));
@@ -95,6 +105,7 @@ int main()
     stuInfo buffer[BUFFER_SIZE] = {stu1, stu2, stu3};
     for(int idx = 0; idx < BUFFER_SIZE; idx++)
     {
+        //头插
         LinkListHeadInsert(list,(void*)&buffer[idx]);
     }
 
@@ -103,8 +114,18 @@ int main()
     LinkListGetLength(list, &size);
     printf("size %d\n",size);
 
+    //指定位置删除
+    // LinkListAppintPosDel(list, 1);
+
+    //指定元素删除
+    LinkListDelAppointData(list,  (void *)&buffer[1] , comparFunc);
+
+
+    //
+
+
     //遍历
-    // linkedListForeach(list, printfStruct);
+    linkedListForeach(list, printfStruct);
 
 
 #endif
