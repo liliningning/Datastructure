@@ -56,7 +56,7 @@ typedef struct doubleDoubleLinkList
     int DoubleLinkListAppintPosDel(DoubleLinkList * pList, int pos);
 
 //链表删除指定数据
-    int DoubleLinkListDelAppointData(DoubleLinkList * pList, ELEMENTTPYE val);
+    int DoubleLinkListDelAppointData(DoubleLinkList * pList, ELEMENTTPYE val,  int ( *comparFunc)(ELEMENTTPYE, ELEMENTTPYE));
 
 //获取链表的长度
     int DoubleLinkListGetLength(DoubleLinkList * pList, int *pSize);

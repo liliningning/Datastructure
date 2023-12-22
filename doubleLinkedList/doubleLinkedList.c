@@ -17,6 +17,9 @@ enum STATUS_CODE
 // 静态函数的声明 找到要删除元素的位置
 static int linkedListAccordAppointVal(DoubleLinkList *pList, ELEMENTTPYE val, int *pPos, int ( *comparFunc)(ELEMENTTPYE, ELEMENTTPYE));
 
+//静态函数的声明  将结点封装为函数
+static DoubleLinkNode * createDoubleLinkNode(ELEMENTTPYE val);
+
 // 链表初始化
 int DoubleLinkListInit(DoubleLinkList **pList)
 {
@@ -39,6 +42,8 @@ int DoubleLinkListInit(DoubleLinkList **pList)
     memset(list->head, 0, sizeof(DoubleLinkNode) * 1);
     list->head->data = 0;
     list->head->next = NULL;
+    //前指针为null
+    list->head->prev = NULL;
 
     // 初始化时尾指针等于头指针
     list->tail = list->head;
@@ -63,6 +68,24 @@ int DoubleLinkListTailInsert(DoubleLinkList *pList, ELEMENTTPYE val)
     return DoubleLinkListAppointPosInsert(pList, pList->len, val);
 }
 
+
+
+static DoubleLinkNode * createDoubleLinkNode(ELEMENTTPYE val)
+{
+    DoubleLinkNode *newNode = (DoubleLinkNode *)malloc(sizeof(DoubleLinkNode) * 1);
+    if (newNode == NULL)
+    {
+        return MALLOC_ERROR;
+    }
+    memset(newNode, 0, sizeof(DoubleLinkNode) * 1);
+    // 赋值
+    newNode->next = NULL;
+    newNode->prev = NULL;
+
+    newNode->data = val;
+    return newNode;
+}
+
 // 链表指定位置插入
 int DoubleLinkListAppointPosInsert(DoubleLinkList *pList, int pos, ELEMENTTPYE val)
 {
@@ -75,7 +98,9 @@ int DoubleLinkListAppointPosInsert(DoubleLinkList *pList, int pos, ELEMENTTPYE v
     {
         return INVALID_ACCESS;
     }
-
+    //新建新结点 封装为函数
+  DoubleLinkNode * newNode =   createDoubleLinkNode(val);
+#if 0
     // 封装结点
     DoubleLinkNode *newNode = (DoubleLinkNode *)malloc(sizeof(DoubleLinkNode) * 1);
     if (newNode == NULL)
@@ -85,6 +110,7 @@ int DoubleLinkListAppointPosInsert(DoubleLinkList *pList, int pos, ELEMENTTPYE v
     memset(newNode, 0, sizeof(DoubleLinkNode) * 1);
     // 赋值
     newNode->data = val;
+#endif
 #if 1
     // 从虚拟头结点开始
     DoubleLinkNode *travelNode = pList->head;
@@ -105,8 +131,10 @@ int DoubleLinkListAppointPosInsert(DoubleLinkList *pList, int pos, ELEMENTTPYE v
             travelNode = travelNode->next;
             pos--;
         }
+        travelNode->next->prev = newNode;    
     }
     newNode->next = travelNode->next;
+    newNode->prev = travelNode;
     travelNode->next = newNode;
 
     if (flag == 1)
@@ -143,10 +171,12 @@ int DoubleLinkListAppintPosDel(DoubleLinkList *pList, int pos)
         return INVALID_ACCESS;
     }
     DoubleLinkNode *trvaelNode = pList->head;
-    int flag = 0;
+    DoubleLinkNode *needNode = NULL;
     if (pos = pList->len)
     {
-        flag = 1;
+        DoubleLinkNode * temNode = pList->tail;
+        pList->tail = pList->tail->prev;
+        needNode = temNode;
     }
     // DoubleLinkNode * trvaelNode = pList->head->next;
     while (--pos)
@@ -157,15 +187,12 @@ int DoubleLinkListAppintPosDel(DoubleLinkList *pList, int pos)
     }
 
     // needNode 需要删除的结点
-    DoubleLinkNode *needNode = trvaelNode->next;
+    needNode = trvaelNode->next;
     trvaelNode->next = needNode->next;
+    needNode->next->prev = trvaelNode;
     // trvaelNode->next = trvaelNode->next->next
 
     // 调整尾指针
-    if (flag == 1)
-    {
-        pList->tail = trvaelNode;
-    }
     // 释放内存
     if (needNode != NULL)
     {
@@ -196,10 +223,10 @@ static int linkedListAccordAppointVal(DoubleLinkList *pList, ELEMENTTPYE val, in
             return pos;
         }
         #else
-        cmp =  comparFunc(trvaelNode->data == val);
+        cmp = comparFunc(val, trvaelNode->data);
         if(cmp == 0)
         {
-            pPos =pos;
+            *pPos =pos;
             return pos;
         }
         #endif
@@ -212,7 +239,7 @@ static int linkedListAccordAppointVal(DoubleLinkList *pList, ELEMENTTPYE val, in
 }
 
 // 链表删除指定数据
-int DoubleLinkListDelAppointData(DoubleLinkList *pList, ELEMENTTPYE val)
+int DoubleLinkListDelAppointData(DoubleLinkList *pList, ELEMENTTPYE val, int ( *comparFunc)(ELEMENTTPYE, ELEMENTTPYE))
 {
     int pos = 0;
     int ret = 0;
