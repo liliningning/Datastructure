@@ -70,5 +70,7 @@ typedef struct doubleDoubleLinkList
     //链表的遍历 int
     // int linkedListForeach(DoubleLinkList * pList);
 
+//逆序打印
+    int DoubleLinkListReverForeach(DoubleLinkList *pList, int(*printFunc)(ELEMENTTPYE));
 
 #endif
