@@ -32,7 +32,7 @@ typedef struct doubleDoubleLinkList
     struct DoubleLinkNode *next;
 
 
-};
+}doubleDoubleLinkList ;
 
 //链表初始化
     int  DoubleLinkListInit(DoubleLinkList ** pList);
@@ -64,13 +64,13 @@ typedef struct doubleDoubleLinkList
 // 链表的销毁
     int DoubleLinkListDestroy(DoubleLinkList * pList);
 
-//链表的遍历
+//链表的遍历 回调函数
     int linkedListForeach(DoubleLinkList * pList, int(*printFunc)(ELEMENTTPYE));
     
     //链表的遍历 int
     // int linkedListForeach(DoubleLinkList * pList);
 
-//逆序打印
+//逆序打印 
     int DoubleLinkListReverForeach(DoubleLinkList *pList, int(*printFunc)(ELEMENTTPYE));
 
 #endif

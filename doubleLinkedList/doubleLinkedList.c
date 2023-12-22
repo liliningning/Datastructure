@@ -71,10 +71,11 @@ int DoubleLinkListTailInsert(DoubleLinkList *pList, ELEMENTTPYE val)
 //将结点封装为函数
 static DoubleLinkNode *createDoubleLinkNode(ELEMENTTPYE val)
 {
-    DoubleLinkNode *newNode = (DoubleLinkNode *)malloc(sizeof(DoubleLinkNode) * 1);
+    DoubleLinkNode * newNode = NULL;
+    newNode = (DoubleLinkNode *)malloc(sizeof(DoubleLinkNode) * 1);
     if (newNode == NULL)
     {
-        return MALLOC_ERROR;
+        return 0;
     }
     memset(newNode, 0, sizeof(DoubleLinkNode) * 1);
     // 赋值
@@ -171,14 +172,15 @@ int DoubleLinkListAppintPosDel(DoubleLinkList *pList, int pos)
     }
     DoubleLinkNode *trvaelNode = pList->head;
     DoubleLinkNode *needNode = NULL;
-    if (pos = pList->len)
+    if (pos == pList->len)
     {
         DoubleLinkNode *temNode = pList->tail;
         pList->tail = pList->tail->prev;
         needNode = temNode;
     }
-    // DoubleLinkNode * trvaelNode = pList->head->next;
-    while (--pos)
+    else
+    {
+        while (--pos)
     {
         // 后移
         trvaelNode = trvaelNode->next;
@@ -188,10 +190,8 @@ int DoubleLinkListAppintPosDel(DoubleLinkList *pList, int pos)
     // needNode 需要删除的结点
     needNode = trvaelNode->next;
     trvaelNode->next = needNode->next;
-    needNode->next->prev = trvaelNode;
-    // trvaelNode->next = trvaelNode->next->next
-
-    // 调整尾指针
+    trvaelNode =  needNode->next->prev;
+    }
     // 释放内存
     if (needNode != NULL)
     {
@@ -328,7 +328,7 @@ int linkedListForeach(DoubleLinkList *pList, int (*printFunc)(ELEMENTTPYE))
 // 逆序打印
 int DoubleLinkListReverForeach(DoubleLinkList *pList, int (*printFunc)(ELEMENTTPYE))
 {
-    pList->tail = pList->len;
+    // pList->tail = pList->len;
     DoubleLinkNode *travelNode = pList->tail;
 
     while (travelNode != pList->head)
