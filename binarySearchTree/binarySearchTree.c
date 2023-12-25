@@ -24,7 +24,7 @@ static int compareFunc(ELEMENTTPYE val1, ELEMENTTPYE val2);
 static BSTreeNode *baseAppointValGetBSTreeNode(binarySearchTree *pBstree, ELEMENTTPYE val)
 
     /* 二叉搜索树的初始化 */
-    int binarySearchTreeInit(binarySearchTree **pBstree, int (*compareFunc)(ELEMENTTPYE val1, ELEMENTTPYE val2))
+    int binarySearchTreeInit(binarySearchTree **pBstree, int (*compareFunc)(ELEMENTTPYE val1, ELEMENTTPYE val2), int (* printFunc)(ELEMENTTPYE val))
 {
     int ret = 0;
     /* 树开辟空间*/
@@ -38,8 +38,10 @@ static BSTreeNode *baseAppointValGetBSTreeNode(binarySearchTree *pBstree, ELEMEN
     /* 初始化树 */
     bstree->root = NULL;
     bstree->size = 0;
-    /* 钩子函数在这赋值*/
+    /* 钩子函数在这赋值 */
     bstree->compareFunc = compareFunc;
+    /* 钩子函数的包装器 */
+    bstree->printFunc = printFunc;
 #if 0
     /* 根结点分配空间 */
     bstree->root = (BSTreeNode *)malloc(sizeof(BSTreeNode) * 1);
@@ -212,7 +214,11 @@ int binarySearchTreeLevelOrderTravel(binarySearchTree *pBstree)
     while (doubleLinkListQueueIsEmpty(Queue))
     {
         doubleLinkListQueueTop(Queue, (void **)&nodeVal);
+    #if 0
         printf("data:%d\n", nodeVal->data);
+    #endif
+
+        pBstree->printFunc(nodeVal->data);
         doubleLinkListQueuePop(Queue);
         /* 判断左子树是否为空  不为空就将左子树入队*/
         if(nodeVal->left != NULL)
