@@ -51,7 +51,7 @@ int dynamicArrayInit(dynamicArray *pArray, int capacity)
     CHECK_PTR(pArray);
 
     // 避免传入非法值
-    if (capacity < 0)
+    if (capacity <= 0)
     {
 
         capacity = DEFAULT_SIZE;
@@ -222,7 +222,7 @@ int dynamicArrayDeleteAppointPosData(dynamicArray *pArray, int pos)
 }
 
 // 动态数组删除指定的元素
-int dynamicArrayDeleteAppointData(dynamicArray *pArray, ELEMENTTYPE val)
+int dynamicArrayDeleteAppointData(dynamicArray *pArray, ELEMENTTYPE*val)
 {
     for (int idx = pArray->len - 1; idx >= 0; idx--)
     {

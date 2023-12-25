@@ -1,7 +1,8 @@
 #ifndef __DYNAMIC_ARRAY_H_
 #define __DYNAMIC_ARRAY_H_
+#include "commom.h"
 /* 动态数组： 容量  大小 空间大小   */
-
+#if 0
 #define ELEMENTTYPE void*
 //  typedef void * ELEMENTTYPE; //方便修改
 //  typedef int ELEMENTTYPE;
@@ -14,6 +15,7 @@
 
 
 } dynamicArray;
+#endif
 
 /* API： 接口*/
 //动态数组的初始化
