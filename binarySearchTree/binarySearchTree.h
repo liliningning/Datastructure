@@ -18,18 +18,20 @@ typedef struct binarySearchTree
     BSTreeNode * root;      /*根结点*/
     int size;               /*树的结点个数*/
 
+    /* 钩子函数比较器  */
+    int(*compareFunc )(ELEMENTTPYE val1, ELEMENTTPYE val2);
 
 } binarySearchTree;
 
 
 /*二叉搜索树的初始化*/
-int binarySearchTreeInit(binarySearchTree **pBstree);
+int binarySearchTreeInit(binarySearchTree **pBstree,  int(*compareFunc )(ELEMENTTPYE val1, ELEMENTTPYE val2));
 
 /*二叉搜索树的插入*/
-int binarySearchTreeInsert(binarySearchTree *pBstree, ELEMENTTPYE val, int( *compareFunc)(ELEMENTTPYE val1, ELEMENTTPYE val2));
+int binarySearchTreeInsert(binarySearchTree *pBstree, ELEMENTTPYE val);
 
 /* 二叉搜索树是否包含指定的元素*/
-int binarySearchTreeIsContainAppointVal(binarySearchTree *pBstree,ELEMENTTPYE val, int(*compareFunc )(ELEMENTTPYE val1, ELEMENTTPYE val2));
+int binarySearchTreeIsContainAppointVal(binarySearchTree *pBstree, ELEMENTTPYE val);
 
 /* 二叉搜索树的前序遍历 */
 int binarySearchTreePreOrderTravel(binarySearchTree *pBstree);
