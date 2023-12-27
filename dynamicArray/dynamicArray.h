@@ -2,12 +2,13 @@
 #define __DYNAMIC_ARRAY_H_
 /* 动态数组： 容量  大小 空间大小   */
 
-
-typedef int ELEMENTTYPE; //方便修改
+#define ELEMENTTYPE void*
+//  typedef void * ELEMENTTYPE; //方便修改
+//  typedef int ELEMENTTYPE;
 
    typedef   struct  dynamicArray
 {
-   ELEMENTTYPE *data;    //数组的空间
+   ELEMENTTYPE *data;    //数组的数
    int len;              //大小
    int capacity;        // 容量
 
@@ -33,8 +34,8 @@ typedef int ELEMENTTYPE; //方便修改
 //动态数组删除数据  删除指定位置的数据 后面全部数据前移
     int dynamicArrayDeleteAppointPosData(dynamicArray *pArray,int pos);
 
-//动态数组删除指定的元素
-    int dynamicArrayDeleteAppointData(dynamicArray *pArray, ELEMENTTYPE val);
+//动态数组删除指定的元素  里面存在的所有指定的元素
+    int dynamicArrayDeleteAppointData(dynamicArray *pArray, ELEMENTTYPE *val);
 
 //动态数组销毁
     int dynamicArrayDestroy(dynamicArray *pArray);

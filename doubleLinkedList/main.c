@@ -109,7 +109,7 @@ int main()
     DoubleLinkListTailDel(list);
 
     //指定数据删除
-    DoubleLinkListDelAppointData (list, (void *)&buffer[1] , comparFunc);
+    // DoubleLinkListDelAppointData (list, (void *)&buffer[1] , comparFunc);
 
     //获取长度
     int size = 0;

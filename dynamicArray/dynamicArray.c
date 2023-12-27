@@ -4,8 +4,27 @@
 #include <string.h>
 
 #define DEFAULT_SIZE 10
-// 状态码
 
+#define FREE_ZERO(ptr)  \
+    do                  \
+    {                   \
+        if (ptr)        \
+        {               \
+            free(ptr);  \
+            ptr = NULL; \
+        }               \
+    } while (0);
+
+#define CHECK_PTR(ptr)   \
+    do                   \
+    {                    \
+        if (ptr == NULL) \
+        {                \
+            exit(0);     \
+        }                \
+    } while (0);
+
+// 状态码
 enum STATUS_CODE
 {
     ON_SUCCESS,
@@ -25,10 +44,11 @@ static int shrinkDynamicCapacity(dynamicArray *pArray);
 // 动态数组的初始化
 int dynamicArrayInit(dynamicArray *pArray, int capacity)
 {
-    if (pArray == NULL)
-    {
-        return NULL_PTR;
-    }
+    // if (pArray == NULL)
+    // {
+    //     return NULL_PTR;
+    // }
+    CHECK_PTR(pArray);
 
     // 避免传入非法值
     if (capacity < 0)
@@ -91,10 +111,7 @@ int dynamicArrayInsertData(dynamicArray *pArray, ELEMENTTYPE val)
 int dynamicArrayAppointPosInsertData(dynamicArray *pArray, int pos, ELEMENTTYPE val)
 {
     // 指针判空  避免
-    if (pArray == NULL)
-    {
-        return NULL_PTR;
-    }
+    CHECK_PTR(pArray);
 
     // 判断位置的合法性  越界
     if (pos < 0 || pos > pArray->len)
@@ -131,10 +148,7 @@ int dynamicArrayAppointPosInsertData(dynamicArray *pArray, int pos, ELEMENTTYPE 
 int dynamicArrayModifyAppointPosData(dynamicArray *pArray, int pos, ELEMENTTYPE val)
 
 {
-    if (pArray == NULL)
-    {
-        return NULL_PTR;
-    }
+    CHECK_PTR(pArray);
     // 判断位置的合法性
     if (pos < 0 || pos >= pArray->len)
     {
@@ -180,16 +194,13 @@ static int shrinkDynamicCapacity(dynamicArray *pArray)
 // 动态数组删除数据 (默认是删除末尾的数据)
 int dynamicArrayDeleteData(dynamicArray *pArray)
 {
-    dynamicArrayDeleteAppointPosData(pArray, pArray->len);
+    dynamicArrayDeleteAppointPosData(pArray, pArray->len - 1);
 }
 
 // 动态数组删除数据  删除指定位置的数据 后面全部数据前移
 int dynamicArrayDeleteAppointPosData(dynamicArray *pArray, int pos)
 {
-    if (pArray == NULL)
-    {
-        return NULL_PTR;
-    }
+    CHECK_PTR(pArray);
     if (pos < 0 || pos >= pArray->len)
     {
         return INVALID_ACCESS;
@@ -211,7 +222,7 @@ int dynamicArrayDeleteAppointPosData(dynamicArray *pArray, int pos)
 }
 
 // 动态数组删除指定的元素
-int dynamicArrayDeleteAppointData(dynamicArray *pArray, ELEMENTTYPE val)
+int dynamicArrayDeleteAppointData(dynamicArray *pArray, ELEMENTTYPE *val)
 {
     for (int idx = pArray->len - 1; idx >= 0; idx--)
     {
@@ -225,10 +236,7 @@ int dynamicArrayDeleteAppointData(dynamicArray *pArray, ELEMENTTYPE val)
 // 动态数组销毁
 int dynamicArrayDestroy(dynamicArray *pArray)
 {
-    if (pArray == NULL)
-    {
-        return NULL_PTR;
-    }
+    CHECK_PTR(pArray);
     if (pArray->data != NULL)
     {
         free(pArray->data);
@@ -254,10 +262,7 @@ int dynamicArrayGetSize(dynamicArray *pArray, int *pSize)
 // 动态数组 获取数组的容量
 int dynamicArrayGetCapacity(dynamicArray *pArray, int *pCapacity)
 {
-    if (pArray == NULL)
-    {
-        return NULL_PTR;
-    }
+    CHECK_PTR(pArray);
     if (pCapacity != NULL)
     {
         *pCapacity = pArray->len;
@@ -266,21 +271,17 @@ int dynamicArrayGetCapacity(dynamicArray *pArray, int *pCapacity)
 }
 
 // 获取指定位置的数据元素
-int dynamicArrayGetAppointPosVal(dynamicArray *pArray,int pos, ELEMENTTYPE *pVal)
+int dynamicArrayGetAppointPosVal(dynamicArray *pArray, int pos, ELEMENTTYPE *pVal)
 {
-    if (pArray == NULL)
-    {
-        return NULL_PTR;
-    }
-
-     if (pos < 0 || pos >= pArray->len)
+    CHECK_PTR(pArray);
+    if (pos < 0 || pos > pArray->len)
     {
         return INVALID_ACCESS;
     }
 
-    if(pVal !=NULL)
+    if (pVal != NULL)
     {
-        pVal[pos] = pArray->data[pos];
+        *pVal = pArray->data[pos];
     }
     return ON_SUCCESS;
 }

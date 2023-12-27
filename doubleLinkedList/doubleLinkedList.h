@@ -26,7 +26,7 @@ typedef struct DoubleLinkList
 }DoubleLinkList;
 typedef struct doubleDoubleLinkList
 {
-    DoubleLinkNode node;
+    DoubleLinkNode * head;
     ELEMENTTPYE data;
     // 指向下一个结点的指针
     struct DoubleLinkNode *next;

@@ -1,5 +1,4 @@
 #include "dynamicArrayStack.h"
-// #include "commom.h"
 #include "dynamicArray.h"
 
 #define DEFAULT_SIZE 10

@@ -49,7 +49,7 @@ int binarySearchTreePostOrderTravel(binarySearchTree *pBstree);
 int binarySearchTreeLevelOrderTravel(binarySearchTree *pBstree);
 
 /* 获取二叉搜索树的高度 */
-int binarySearchTreeGetHeight(binarySearchTree *pBstree);
+int binarySearchTreeGetHeight(binarySearchTree *pBstree, int *pHeight);
 
 /* 二叉搜索树的删除（删除的是值）*/
 int binarySearchTreeDelete(binarySearchTree *pBstree);

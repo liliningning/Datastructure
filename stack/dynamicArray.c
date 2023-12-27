@@ -231,6 +231,7 @@ int dynamicArrayDeleteAppointData(dynamicArray *pArray, ELEMENTTYPE*val)
             dynamicArrayDeleteAppointPosData(pArray, idx);
         }
     }
+    return ON_SUCCESS;
 }
 
 // 动态数组销毁
@@ -256,7 +257,7 @@ int dynamicArrayGetSize(dynamicArray *pArray, int *pSize)
     {
         *pSize = pArray->len;
     }
-    return ON_SUCCESS;
+    return pArray->len;
 }
 
 // 动态数组 获取数组的容量

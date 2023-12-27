@@ -68,10 +68,10 @@ int DoubleLinkListTailInsert(DoubleLinkList *pList, ELEMENTTPYE val)
     return DoubleLinkListAppointPosInsert(pList, pList->len, val);
 }
 
-//将结点封装为函数
+// 将结点封装为函数
 static DoubleLinkNode *createDoubleLinkNode(ELEMENTTPYE val)
 {
-    DoubleLinkNode * newNode = NULL;
+    DoubleLinkNode *newNode = NULL;
     newNode = (DoubleLinkNode *)malloc(sizeof(DoubleLinkNode) * 1);
     if (newNode == NULL)
     {
@@ -181,16 +181,16 @@ int DoubleLinkListAppintPosDel(DoubleLinkList *pList, int pos)
     else
     {
         while (--pos)
-    {
-        // 后移
-        trvaelNode = trvaelNode->next;
-        // pos--;
-    }
+        {
+            // 后移
+            trvaelNode = trvaelNode->next;
+            // pos--;
+        }
 
-    // needNode 需要删除的结点
-    needNode = trvaelNode->next;
-    trvaelNode->next = needNode->next;
-    trvaelNode =  needNode->next->prev;
+        // needNode 需要删除的结点
+        needNode = trvaelNode->next;
+        trvaelNode->next = needNode->next;
+        trvaelNode = needNode->next->prev;
     }
     // 释放内存
     if (needNode != NULL)
@@ -338,4 +338,34 @@ int DoubleLinkListReverForeach(DoubleLinkList *pList, int (*printFunc)(ELEMENTTP
     }
 
     return ON_SUCCESS;
+}
+
+// 获取指定位置的值
+int DoubleLinkListGetAppintPosdData(DoubleLinkList *pList, int pos, ELEMENTTPYE *pVal)
+{
+    if (pList == NULL)
+    {
+        return NULL_PTR;
+    }
+
+}
+
+// 获取 头的值
+int DoubleLinkListGetTopData(DoubleLinkList *pList, ELEMENTTPYE *pVal)
+{
+    return  DoubleLinkListGetAppintPosdData(pList, 0, pVal);
+    if (pList == NULL)
+    {
+        return NULL_PTR;
+    }
+    if(pVal)
+    {
+        *pVal =  pList->head->next->data;
+    }
+}
+
+// 获取尾的值
+int DoubleLinkListGetRearData(DoubleLinkList *pList, ELEMENTTPYE *pVal)
+{
+    
 }
