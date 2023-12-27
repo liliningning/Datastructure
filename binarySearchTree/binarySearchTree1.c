@@ -238,7 +238,7 @@ static BSTreeNode *bstreeNodepreDecessor(BSTreeNode *node)
         return travelNode;
     }
     /* 程序到这里一定说明当前结点没有左子树 就往其父结点寻找 直到找到当前结点是其父结点的右子树 */
-    while(node->parent !=NULL && node == node->parent->left)
+    while (node->parent != NULL && node == node->parent->left)
     {
         node = node->parent;
     }
@@ -248,6 +248,22 @@ static BSTreeNode *bstreeNodepreDecessor(BSTreeNode *node)
 /* 获得当前结点的后继结点 */
 static BSTreeNode *bstreeNodeSuccessor(BSTreeNode *node)
 {
+    /*  如果当前结点的右子树不为空 当前结点的后继结点在 右左左 */
+    if (node->right != NULL)
+    {
+        BSTreeNode *travelNode = node->right;
+        while (travelNode->left != NULL)
+        {
+            travelNode = travelNode->left;
+        }
+        return travelNode;
+    }
+    /* 程序到这里一定说明当前结点没有右子树 就往其父结点寻找 直到找到当前结点是其父结点的左子树 */
+    while (node->parent != NULL && node == node->parent->right)
+    {
+        node = node->parent;
+    }
+    return node->parent;
 }
 
 /* 前序遍历 根左右 */
