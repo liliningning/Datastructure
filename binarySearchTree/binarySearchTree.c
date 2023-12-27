@@ -9,7 +9,7 @@ enum STATUS_CODE
     NOT_FIND = -1,
     ON_SUCCESS,
     NULL_PTR,
-    MALLOC_ERROR, 
+    MALLOC_ERROR,
     INVALID_ACCESS,
 
 };
@@ -66,6 +66,8 @@ int binarySearchTreeInit(binarySearchTree **pBstree, int (*compareFunc)(ELEMENTT
     bstree->compareFunc = compareFunc;
     /* 钩子函数的包装器 */
     bstree->printFunc = printFunc;
+
+    doubleLinkListQueueInit(&(bstree->queue));
 #if 0
     /* 根结点分配空间 */
     bstree->root = (BSTreeNode *)malloc(sizeof(BSTreeNode) * 1);
@@ -168,7 +170,7 @@ int binarySearchTreeInsert(binarySearchTree *pBstree, ELEMENTTPYE val)
             return ret;
         }
     }
-    
+
 #if 0
 
     /* 定义一个新结点*/
@@ -203,8 +205,6 @@ int binarySearchTreeInsert(binarySearchTree *pBstree, ELEMENTTPYE val)
     (pBstree->size)++;
     return ret;
 }
-
-
 
 /* 判断二叉搜索树的度为2 */
 static int binarySearchTreeNodeTwochildrens(BSTreeNode *node)
@@ -331,7 +331,7 @@ int binarySearchTreeLevelOrderTravel(binarySearchTree *pBstree)
     /* 判断队列是否为空*/
     BSTreeNode *popnodeVal = NULL;
 
-    while (!doubleLinkListQueueIsEmpty(Queue)) 
+    while (!doubleLinkListQueueIsEmpty(Queue))
     {
         doubleLinkListQueueTop(Queue, (void **)&popnodeVal);
 #if 0
@@ -408,9 +408,9 @@ int binarySearchTreeGetHeight(binarySearchTree *pBstree, int *pHeight)
     while (!doubleLinkListQueueIsEmpty(queue))
     {
         doubleLinkListQueueTop(queue, (void **)&newNode);
-        
+
         doubleLinkListQueuePop(queue);
-        
+
         /* 当前层的结点数 */
         count--;
         /* 判断左子树是否为空 不为空入队 */
@@ -437,5 +437,49 @@ int binarySearchTreeGetHeight(binarySearchTree *pBstree, int *pHeight)
     }
     return height;
     /* 释放空间 */
+    doubleLinkListQueueDestroy(queue);
+}
+
+/* 二叉搜索树的销毁 */
+int binarySearchTreeDestory(binarySearchTree *pBstree)
+{
+    if (pBstree == NULL)
+    {
+        return NULL_PTR;
+    }
+    doubleLinkListQueue *queue = NULL;
+    doubleLinkListQueueInit(&queue);
+
+    /* 根结点入队 */
+    doubleLinkListQueuePush(queue, pBstree->root);
+
+    BSTreeNode *newNode = NULL;
+    while (!doubleLinkListQueueIsEmpty(queue))
+    {
+        doubleLinkListQueueTop(queue, (void **)&newNode);
+
+        doubleLinkListQueuePop(queue);
+
+        /* 判断左子树是否为空 不为空入队 */
+        if (newNode->left != NULL)
+        {
+            doubleLinkListQueuePush(queue, newNode->left);
+        }
+        /* 判断右子树是否为空 不为空入队 */
+        if (newNode->right != NULL)
+        {
+            doubleLinkListQueuePush(queue, newNode->right);
+        }
+        if(newNode)
+        {
+            free(newNode);
+            newNode = NULL;
+        }
+        if(pBstree)
+        {
+            free(pBstree);
+            pBstree = NULL;
+        }
+    }
     doubleLinkListQueueDestroy(queue);
 }
