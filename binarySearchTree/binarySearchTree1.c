@@ -464,6 +464,7 @@ int binarySearchTreeGetHeight(binarySearchTree *pBstree, int *pHeight)
     doubleLinkListQueueDestroy(queue);
 }
 
+/* 二叉搜索树删除指定的结点 */
 static int binarySearchTreeDeleteNode(binarySearchTree *pBstree, BSTreeNode *node)
 {
     int ret = 0;
@@ -476,19 +477,13 @@ static int binarySearchTreeDeleteNode(binarySearchTree *pBstree, BSTreeNode *nod
     if (binarySearchTreeNodeTwochildrens(node))
     {
 
-        BSTreeNode *newNode  = bstreeNodepreDecessor(node);
+        BSTreeNode *newNode = bstreeNodepreDecessor(node);
         node->data = newNode->data;
         node = newNode;
     }
-#if 0
-    if (binarySearchTreeNodeOnechildrens(node))
-    {
-        newChildNode->parent = node->parent;
-
-   }
-#else
     /* 判断 删除结点的孩子是 它的左子树 还是右子树 */
     BSTreeNode *childNode = node->left != NULL ? node->left : node->right;
+    BSTreeNode *delNode = NULL;
 
     if (childNode)
     {
@@ -498,11 +493,12 @@ static int binarySearchTreeDeleteNode(binarySearchTree *pBstree, BSTreeNode *nod
         if (node->parent == NULL)
         {
             pBstree->root = childNode;
-            if (node)
-            {
-                free(node)
-                node = NULL;
-            }
+            delNode = node;
+            // if (node)
+            // {
+            //     free(node)
+            //     node = NULL;
+            // }
         }
         /* 判断该结点是父结点的左子树还是右子树 */
         else
@@ -515,25 +511,30 @@ static int binarySearchTreeDeleteNode(binarySearchTree *pBstree, BSTreeNode *nod
             {
                 childNode = node->parent->right;
             }
-            if (node)
-            {
-                free(node)
-                node = NULL;
-            }
+            delNode = node;
+            // if (node)
+            // {
+            //     free(node)
+            //     node = NULL;
+            // }
         }
     }
     else
     {
         /* 度为0 直接将其释放掉 */
-        if(node)
-        {
-            free(node)
-            node = NULL;
-        }
-
+        delNode = node;
+        // if(node)
+        // {
+        //     free(node)
+        //     node = NULL;
+        // }
     }
-
-#endif
+    if (delNode)
+    {
+        free(delNode);
+        delNode = NULL;
+    }
+    return  ret;
 }
 
 /* 二叉搜索树的删除（删除的是值）*/
