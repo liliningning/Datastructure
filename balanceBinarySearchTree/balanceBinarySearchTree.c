@@ -76,6 +76,13 @@ static int AVLTreeNodeAdjustBalance(BalanceBinarySearchTree *pBstree , AVLTreeNo
 /* 获取 AVL 较高的子结点  */
 static  AVLTreeNode * AVLTreeNodeGetChildIsTaller(AVLTreeNode *node);
 
+/* 当前结点是父结点的左子树 */
+static int AVLTreeNodeCurrentNodeIsLeft( AVLTreeNode *node);
+
+/* 当前结点是父结点的右子树 */
+static int AVLTreeNodeCurrentNodeIsRight( AVLTreeNode *node);
+
+
 /* 二叉搜索树的初始化 */
 int balanceBinarySearchTreeInit(BalanceBinarySearchTree **pBstree, int (*compareFunc)(ELEMENTTYPE val1, ELEMENTTYPE val2), int (*printFunc)(ELEMENTTYPE val))
 {
@@ -272,11 +279,11 @@ static  AVLTreeNode * AVLTreeNodeGetChildIsTaller(AVLTreeNode *node)
     }
     else
     {
-        if(node->parent != NULL && node == node->parent->left)
+        if(AVLTreeNodeCurrentNodeIsLeft(node))
         {
             return node->left;
         }
-        else
+        else(AVLTreeNodeCurrentNodeIsRight(node))
         {
             return node->right;
         }
@@ -286,6 +293,19 @@ static  AVLTreeNode * AVLTreeNodeGetChildIsTaller(AVLTreeNode *node)
     
 }
 
+/* 当前结点是父结点的左子树 */
+static int AVLTreeNodeCurrentNodeIsLeft( AVLTreeNode *node)
+{
+    return (node->parent != NULL) && (node->parent->left);
+}
+
+
+/* 当前结点是父结点的右子树 */
+static int AVLTreeNodeCurrentNodeIsRight( AVLTreeNode *node)
+{
+    return (node->parent != NULL) && (node->parent->right);
+}
+
 
 /* 调整平衡  */
 static int AVLTreeNodeAdjustBalance(BalanceBinarySearchTree *pBstree , AVLTreeNode *node)
@@ -293,27 +313,28 @@ static int AVLTreeNodeAdjustBalance(BalanceBinarySearchTree *pBstree , AVLTreeNo
    
     AVLTreeNode * parant = AVLTreeNodeGetChildIsTaller(node);
     AVLTreeNode * child =  AVLTreeNodeGetChildIsTaller(parant);
-    if(parant == node->left)
+
+    if(AVLTreeNodeCurrentNodeIsLeft(parant))
     {
         /* L*/
-        if(child == parant->left)
+        if(AVLTreeNodeCurrentNodeIsLeft(child))
         {
             /* LL*/
         }
-        else
+        else if(AVLTreeNodeCurrentNodeIsRight(child))
         {
             /* LR */
         }
     }
 
     /* R */
-    else
+    else if (AVLTreeNodeCurrentNodeIsRight(parant))
     {
-        if(child == parant->left)
+        if(AVLTreeNodeCurrentNodeIsLeft(child))
         {
             /* RR*/
         }
-        else
+        else if(AVLTreeNodeCurrentNodeIsRight(child))
         {
             /* RL */
         }
