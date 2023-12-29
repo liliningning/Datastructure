@@ -305,7 +305,7 @@ static int AVLTreeNodeAdjustBalance(BalanceBinarySearchTree *pBstree , AVLTreeNo
             /* LR */
         }
     }
-    
+
     /* R */
     else
     {
@@ -612,11 +612,20 @@ int balanceBinarySearchTreeIsContainAppointVal(BalanceBinarySearchTree *pBstree,
 /* 层序遍历的思路. */
 int balanceBinarySearchTreeGetHeight(BalanceBinarySearchTree *pBstree, int *pHeight)
 {
+
     if (pBstree == NULL)
     {
         return NULL_PTR;
     }
-
+#if 1    
+    /* 判断是否为空树 */
+    if (pBstree->size == 0)
+    {
+        return 0;
+    }
+    /* 返回时根结点的高度 */
+    return pBstree->root->height;
+#else
     /* 判断是否为空树 */
     if (pBstree->size == 0)
     {
@@ -664,6 +673,7 @@ int balanceBinarySearchTreeGetHeight(BalanceBinarySearchTree *pBstree, int *pHei
     /* 释放队列的空间 */
     doubleLinkListQueueDestroy(pQueue);
     return ret;
+#endif
 }
 
 static int balanceBinarySearchTreeDeleteNode(BalanceBinarySearchTree *pBstree, AVLTreeNode *node)
