@@ -73,6 +73,9 @@ static int tempMax(int val1, int val2);
 /* 调整平衡  */
 static int AVLTreeNodeAdjustBalance(BalanceBinarySearchTree *pBstree , AVLTreeNode *node);
 
+/* 获取 AVL 较高的子结点  */
+static  AVLTreeNode * AVLTreeNodeGetChildIsTaller(AVLTreeNode *node);
+
 /* 二叉搜索树的初始化 */
 int balanceBinarySearchTreeInit(BalanceBinarySearchTree **pBstree, int (*compareFunc)(ELEMENTTYPE val1, ELEMENTTYPE val2), int (*printFunc)(ELEMENTTYPE val))
 {
@@ -191,6 +194,7 @@ static AVLTreeNode *bstreeNodeSuccessor(AVLTreeNode *node)
     return node->parent;
 }
 
+/* 创建结点*/
 static AVLTreeNode *createAVLreeNewNode(ELEMENTTYPE val, AVLTreeNode *parent)
 {
     /* 分配根结点 */
@@ -251,10 +255,71 @@ static int AVLTreeNodeUptadeHeight(AVLTreeNode *node)
     return 1 + tempMax(leftHeight, rightHeight);
 }
 
+/* 获取 AVL 较高的子结点  */
+static  AVLTreeNode * AVLTreeNodeGetChildIsTaller(AVLTreeNode *node)
+{
+      /* 左子树高度 */
+    int leftHeight = node->left == NULL ? 0 : node->left->height;
+    /* 右子树高度 */
+    int rightHeight = node->right == NULL ? 0 : node->right->height;
+    if(leftHeight > rightHeight)
+    {
+        return node->left;
+    }
+    else if (leftHeight < rightHeight)
+    {
+        return node->right;
+    }
+    else
+    {
+        if(node->parent != NULL && node == node->parent->left)
+        {
+            return node->left;
+        }
+        else
+        {
+            return node->right;
+        }
+
+    }
+    
+    
+}
+
+
 /* 调整平衡  */
 static int AVLTreeNodeAdjustBalance(BalanceBinarySearchTree *pBstree , AVLTreeNode *node)
 {
-
+   
+    AVLTreeNode * parant = AVLTreeNodeGetChildIsTaller(node);
+    AVLTreeNode * child =  AVLTreeNodeGetChildIsTaller(parant);
+    if(parant == node->left)
+    {
+        /* L*/
+        if(child == parant->left)
+        {
+            /* LL*/
+        }
+        else
+        {
+            /* LR */
+        }
+    }
+    
+    /* R */
+    else
+    {
+        if(child == parant->left)
+        {
+            /* RR*/
+        }
+        else
+        {
+            /* RL */
+        }
+    }
+ 
+    
 }
 
 
@@ -385,6 +450,7 @@ static int preOrderTravel(BalanceBinarySearchTree *pBstree, AVLTreeNode *node)
     /* 右子树 */
     preOrderTravel(pBstree, node->right);
 }
+
 /* 二叉搜索树的前序遍历 */
 int balanceBinarySearchTreePreOrderTravel(BalanceBinarySearchTree *pBstree)
 {
@@ -393,12 +459,6 @@ int balanceBinarySearchTreePreOrderTravel(BalanceBinarySearchTree *pBstree)
     return ret;
 }
 
-/* 斐波那契数列 */
-/*
-    # 递归
-    f(1) = 1, f(2) = 1
-    f(n) = f(n-1) + f(n-2) [n > 2 n是整数]
-*/
 
 /* 中序遍历 */
 /* 左子树 根结点 右子树 */
@@ -535,6 +595,10 @@ static int AVLTreeNodeIsBalanced(AVLTreeNode *node)
     if (nodeF <= 1)
     {
         return true;
+    }
+    else
+    {
+        return flase;
     }
 }
 
