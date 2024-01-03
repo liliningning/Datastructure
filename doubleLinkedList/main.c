@@ -133,64 +133,66 @@ int comparFunc(ELEMENTTPYE arg1, ELEMENTTPYE arg2)
 {
     int num1 = *(int *)arg1;
     int num2 = *(int *)arg2;
-    return num1 < num2 ? 1 : 0;
+    return num1 <= num2 ? 1 : 0;
 }
 
 /* 合并链表的函数*/
-DoubleLinkList *mergeOrderLinkLisr(DoubleLinkList *Plist1, DoubleLinkList *Plist2)
+ int mergeOrderLinkLisr(DoubleLinkList *Plist1, DoubleLinkList *Plist2, DoubleLinkList *Plist3)
 {
     int ret = 0;
-    /* 链表1为空 返回链表2 */
+    /* 链表1为空 */
     DoubleLinkNode *Plist1Node = Plist1->head->next;
+
     if (Plist1 == NULL)
     {
-        return Plist2;
+        return ret;
     }
 
-    /* 链表1和2都为空 就返回空 */
+    /* 链表1和2都为空 */
     if (Plist1 == NULL && Plist1 == NULL)
     {
-        return NULL;
+        return ret;
     }
 
-    /* 链表2为空 返回链表1 */
+    /* 链表2为空 */
     DoubleLinkNode *Plist2Node = Plist2->head->next;
     if (Plist2 == NULL)
     {
-        return Plist1;
+        return ret;
+    }
+    /* 新的链表判空 、*/
+   if (Plist3 == NULL)
+    {
+        return ret;
     }
 
-    /* 用一个新的链表存放排好序的新链表 */
-    DoubleLinkList *newLinkList = NULL;
-    DoubleLinkListInit(&newLinkList);
-
     /* 链表1 和链表2 都不为空 */
-    while (Plist1 != NULL && Plist1 != NULL)
+    while (Plist1Node != NULL && Plist2Node != NULL)
     {
         if (comparFunc(Plist1Node->data, Plist2Node->data))
         {
-            DoubleLinkListTailInsert(newLinkList, Plist1Node->data);
+            DoubleLinkListTailInsert(Plist3, Plist1Node->data);
             Plist1Node = Plist1Node->next;
         }
         else
         {
-            DoubleLinkListTailInsert(newLinkList, Plist2Node->data);
+            DoubleLinkListTailInsert(Plist3, Plist2Node->data);
             Plist2Node = Plist2Node->next;
         }
     }
     /* 链表1结束*/
-    if (Plist2 != NULL)
+    if (Plist1Node == NULL )
     {
-        DoubleLinkListTailInsert(newLinkList, Plist2Node->data);
+        DoubleLinkListTailInsert(Plist3, Plist2Node->data);
         Plist2Node = Plist2Node->next;
     }
-    else if (Plist1 != NULL)
+   else 
     {
-        DoubleLinkListTailInsert(newLinkList, Plist1Node->data);
+        DoubleLinkListTailInsert(Plist3, Plist1Node->data);
         Plist1Node = Plist1Node->next;
     }
 
-    return NULL;
+    return ret;
 }
 
 /* 用户自定义 */
@@ -230,13 +232,16 @@ int main()
     DoubleLinkListReverForeach(Plist1, printfBasicData);
     printf("\n");
     DoubleLinkListReverForeach(Plist2, printfBasicData);
-#endif
-    DoubleLinkList *list = mergeOrderLinkLisr(Plist1, Plist2);
+#endif 
+/* 用一个新的链表存放排好序的新链表 */
+    DoubleLinkList *newLinkList = NULL;
+    DoubleLinkListInit(&newLinkList);
+    mergeOrderLinkLisr(Plist1, Plist2, newLinkList);
     int size = 0;
-    DoubleLinkListGetLength(list, &size);
+    DoubleLinkListGetLength(newLinkList, &size);
     printf("size3 %d\n", size);
 
-    linkedListForeach(list, printfBasicData);
+    linkedListForeach(newLinkList, printfBasicData);
 
     return 0;
 }
