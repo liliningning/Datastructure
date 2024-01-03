@@ -129,25 +129,15 @@ int main()
 #endif
 
 /* 比较函数  */
-int comparFunc( ELEMENTTPYE arg1, ELEMENTTPYE  arg2)
+int comparFunc(ELEMENTTPYE arg1, ELEMENTTPYE arg2)
 {
     int num1 = *(int *)arg1;
     int num2 = *(int *)arg2;
-    if(num1 <= num2)
-    {
-        return num1;
-    }
-    else
-    {
-        return num2;
-    }
-    
-
-    
+    return num1 < num2 ? 1 : 0;
 }
 
 /* 合并链表的函数*/
-DoubleLinkList * mergeOrderLinkLisr(DoubleLinkList *Plist1, DoubleLinkList *Plist2)
+DoubleLinkList *mergeOrderLinkLisr(DoubleLinkList *Plist1, DoubleLinkList *Plist2)
 {
     int ret = 0;
     /* 链表1为空 返回链表2 */
@@ -177,7 +167,7 @@ DoubleLinkList * mergeOrderLinkLisr(DoubleLinkList *Plist1, DoubleLinkList *Plis
     /* 链表1 和链表2 都不为空 */
     while (Plist1 != NULL && Plist1 != NULL)
     {
-        if (comparFunc(Plist1Node, Plist2Node))
+        if (comparFunc(Plist1Node->data, Plist2Node->data))
         {
             DoubleLinkListTailInsert(newLinkList, Plist1Node->data);
             Plist1Node = Plist1Node->next;
