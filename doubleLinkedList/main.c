@@ -161,6 +161,7 @@ int comparFunc(ELEMENTTPYE arg1, ELEMENTTPYE arg2)
         return ret;
     }
     /* 新的链表判空 、*/
+    DoubleLinkNode * newNode = Plist3->tail;
    if (Plist3 == NULL)
     {
         return ret;
@@ -216,8 +217,8 @@ int main()
     int array2[BUFFER_SIEZE] = {2, 4, 5, 6, 8};
     for (int idx = 0; idx < BUFFER_SIEZE; idx++)
     {
-        DoubleLinkListHeadInsert(Plist1, (void *)&array1[idx]);
-        DoubleLinkListHeadInsert(Plist2, (void *)&array2[idx]);
+        DoubleLinkListTailInsert(Plist1, (void *)&array1[idx]);
+        DoubleLinkListTailInsert(Plist2, (void *)&array2[idx]);
     }
 #if 0
     // 获取长度
