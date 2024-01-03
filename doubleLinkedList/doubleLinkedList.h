@@ -21,18 +21,11 @@ typedef struct DoubleLinkList
     //尾指针
     DoubleLinkNode * tail;  //为什么尾指针不需要分配空间？
     //链表长度
-    int len;
-
-}DoubleLinkList;
-typedef struct doubleDoubleLinkList
-{
-    DoubleLinkNode * head;
-    ELEMENTTPYE data;
-    // 指向下一个结点的指针
+    int len; 
     struct DoubleLinkNode *next;
 
+}DoubleLinkList;
 
-}doubleDoubleLinkList ;
 
 //链表初始化
     int  DoubleLinkListInit(DoubleLinkList ** pList);

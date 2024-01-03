@@ -333,6 +333,7 @@ int DoubleLinkListReverForeach(DoubleLinkList *pList, int (*printFunc)(ELEMENTTP
 
     while (travelNode != pList->head)
     {
+        
         printFunc(travelNode->data);
         travelNode = travelNode->prev;
     }
